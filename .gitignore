@@ -5,6 +5,7 @@ connection.properties
 default-*.json
 .cdsrc-private.json
 *-lock.json
+app/user-mngr/dist/
 gen/
 node_modules/
 target/
