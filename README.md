@@ -7,8 +7,8 @@
 This sample code aims to help SAP developers (customers or partners) to develop **secure applications** on **SAP Business Technology Platform** using the **Authorization and Trust Management Service (XSUAA) APIs** from **Cloud Foundry**. The code is developed using the **SAP Cloud Application Programming Model (CAP) NodeJS framework** and implements a **microservice** to **manage business applications' users and their respective authorizations** with a simple **SAP Fiori Elements UI** for testing.
 
 ## Requirements
-- SAP Business Technology Platform productive subaccount (user management is not possible on trial) with Cloud Foundry environment enabled
-- SAP Business Application Studio entitlement / subscription
+- SAP Business Technology Platform **productive subaccount** (user management is not possible on trial) with Cloud Foundry environment enabled
+- SAP Business Application Studio entitlement / subscription (**Full Stack Cloud Application Dev Space**)
 - SAP Launchpad Service entitlement / subscription
 
 ## Download and Installation
