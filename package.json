@@ -1,0 +1,95 @@
+{
+    "name": "user-mngr",
+    "version": "1.0.0",
+    "description": "BTP user management microservice for any generic application.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap-cloud-sdk/http-client": "^2.7.1",
+        "@sap/cds": "^6.1.1",
+        "@sap/xssec": "^3.2.13",
+        "express": "^4",
+        "passport": "^0.6.0",
+        "sqlite3": "^5.0.11"
+    },
+    "devDependencies": {
+        "@sap/ux-specification": "^1.102.4",
+        "rimraf": "^3.0.2"
+    },
+    "engines": {
+      "node": "^16.15.0",
+      "npm": "^8.5.5"
+    },
+    "scripts": {
+        "start": "cds run",
+        "watch-user-mngr": "cds watch --open user-mngr/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy user-mngr --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "es2020": true,
+            "node": true,
+            "jest": true,
+            "mocha": true
+        },
+        "globals": {
+            "SELECT": true,
+            "INSERT": true,
+            "UPDATE": true,
+            "DELETE": true,
+            "CREATE": true,
+            "DROP": true,
+            "CDL": true,
+            "CQL": true,
+            "CXL": true,
+            "cds": true
+        },
+        "rules": {
+            "no-console": "off",
+            "require-atomic-updates": "off"
+        }
+    },
+    "cds": {
+        "requires": {
+            "auth": {
+                "[development]": {
+                    "strategy": "mock",
+                    "users": {
+                        "john": {
+                            "roles": [
+                                "UserAdmin"
+                            ]
+                        }
+                    }
+                }
+            },
+            "db": {
+                "kind": "sqlite",
+                "model": "*",
+                "credentials": {
+                    "database": ":memory:"
+                }
+            },
+            "xsuaa-api": {
+                "kind": "rest",
+                "credentials": {
+                    "destination": "xsuaa-api"
+                }
+            },
+            "uaa": {
+                "kind": "xsuaa"
+            }
+        }
+    },
+    "features": {
+        "fiori_preview": false,
+        "in_memory_db": true
+    },
+    "sapux": [
+        "app/user-mngr"
+    ]
+}

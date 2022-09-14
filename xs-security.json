@@ -1,0 +1,77 @@
+{
+    "xsappname": "generic-app",
+    "tenant-mode": "dedicated",
+    "description": "Security profile of a Generic Application",
+    "scopes": [
+        {
+            "name": "uaa.user",
+            "description": "UAA"
+        },
+        {
+            "name": "$XSAPPNAME.Admin",
+            "description": "Administrator"
+        },
+        {
+            "name": "$XSAPPNAME.UserAdmin",
+            "description": "User Administrator"
+        },
+        {
+            "name": "$XSAPPNAME.User",
+            "description": "User"
+        }
+    ],
+    "attributes": [],
+    "role-templates": [
+        {
+            "name": "Token_Exchange",
+            "description": "UAA",
+            "scope-references": [
+                "uaa.user"
+            ]
+        },
+        {
+            "name": "GenericApp_Admin",
+            "description": "Administrator authorization",
+            "scope-references": [
+                "$XSAPPNAME.Admin"
+            ]
+        },
+        {
+            "name": "GenericApp_UserAdmin",
+            "description": "User Administrator authorization",
+            "scope-references": [
+                "$XSAPPNAME.UserAdmin"
+            ]
+        },
+        {
+            "name": "GenericApp_User",
+            "description": "User authorization",
+            "scope-references": [
+                "$XSAPPNAME.User"
+            ]
+        }
+    ],
+    "role-collections": [
+        {
+            "name": "GenericApp_Administrator",
+            "description": "Administrator of a generic application",
+            "role-template-references": [
+                "$XSAPPNAME.GenericApp_Admin",
+                "$XSAPPNAME.GenericApp_UserAdmin"
+            ]
+        },
+        {
+            "name": "GenericApp_User",
+            "description": "User of a generic application",
+            "role-template-references": [
+                "$XSAPPNAME.GenericApp_User"
+            ]
+        }
+    ],
+    "oauth2-configuration": {
+        "redirect-uris": [
+            "https://*.hana.ondemand.com/**",
+            "https://*.applicationstudio.cloud.sap/**"
+        ]
+    }
+}
