@@ -4,6 +4,7 @@ _out
 connection.properties
 default-*.json
 .cdsrc-private.json
+*-lock.json
 gen/
 node_modules/
 target/
