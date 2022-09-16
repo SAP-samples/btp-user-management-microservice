@@ -131,6 +131,8 @@ cds watch
 3. Click on the **User** link
 4. When prompted to **Sign in** type 
 5. You should see the **information from your user** in JSON format like demonstrated below:
+<p align="center"><img src="https://i.imgur.com/DQUnWGg.png" alt="User information"/></p>
+
 6. Click on the other to links (**IdP** and **Authorization**) to check whether they are working fine as well
 
 ## Known Issues
