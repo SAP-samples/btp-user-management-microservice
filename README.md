@@ -154,6 +154,10 @@ cf set-env user-mngr-srv APP_AUTHS '{ "ID": 1, "name": "GenericApp_Administrator
 ```
 cf set-env user-mngr-srv DEFAULT_AUTH 2
 ```
+3. **Restage** the service:
+```
+cf restage user-mngr-srv
+```
 
 ### Test the Application in Cloud Foundry
 1. On the **left-hand pane** of your **BTP cockpit**, click on **HTML5 applications**
