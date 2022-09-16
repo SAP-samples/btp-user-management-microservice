@@ -5,6 +5,7 @@
 
 ## Description
 This sample code aims to help SAP developers (customers or partners) to develop **secure applications** on **SAP Business Technology Platform** using the **Authorization and Trust Management Service (XSUAA) APIs** from **Cloud Foundry**. The code is developed using the **SAP Cloud Application Programming Model (CAP) NodeJS framework** and implements a **microservice** to **manage business applications' users and their respective authorizations** with a simple **SAP Fiori Elements UI** for testing.
+> **IMPORTANT NOTE**: please be aware that the code in this repository is targeted to experienced CAP developers
 
 ## Solution Architecture
 ![BTP User Management Microservice Architecture](https://i.imgur.com/iaa5IXO.png "BTP User Management Microservice")
@@ -76,6 +77,21 @@ mv .env default-env.json
 mv default.env .env
 ```
 
+### Install Project Dependencies
+1. Setup **npm registry**:
+```
+npm config set registry https://registry.npmjs.org/
+```
+> **NOTE**: this is important to avoid issues when running `npm clean-install` in the MTA build process.
+2. Install **service dependencies**:
+```
+npm install
+```
+3. Install **UI dependencies**:
+```
+cd app/user-mngr && npm install && cd ../..
+```
+
 ### Create the Destination to the XSUAA API
 1. Display the **XSUAA (apiaaccess plan) service key**:
 ```
@@ -105,8 +121,17 @@ cf service-key xsuaa-api xsuaa-api-sk
 6. Check both **role collections**
 7. Click on **Assign Role Collection**
 
-
-
+### Test Application Locally
+1. **Start** the application in BAS:
+```
+cds watch
+```
+2. **CTRL+Click** the **http://localhost:4004** link in the terminal to open the **service home page** in a new tab
+> **NOTE**: you must **allow pop-ups** for your **BAS URL** in your browser in order to get the new tab to be properly opened.
+3. Click on the **User** link
+4. When prompted to **Sign in** type 
+5. You should see the **information from your user** in JSON format like demonstrated below:
+6. Click on the other to links (**IdP** and **Authorization**) to check whether they are working fine as well
 
 ## Known Issues
 No known issues.
