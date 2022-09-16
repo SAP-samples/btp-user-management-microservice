@@ -95,6 +95,17 @@ cf service-key xsuaa-api xsuaa-api-sk
 
 8. Click **Save**
 
+### Assign the Application's Role Collections to Your User
+1. Open the **BTP cockpit** and access **your subaccount** (same subaccount used to start the **BAS Dev Space**)
+2. On the **left-hand pane** expand the **Security** node
+3. In the **users list** on the right click on **your user**
+> **HINT**: if the users list is to long and you find it difficult to locate your user, you can **use the search box** at the top.
+4. In the **user's details** at the right click on **Assign Role Collection**
+5. Find the role collections starting with **GenericApp**
+6. Check both **role collections**
+7. Click on **Assign Role Collection**
+
+
 
 
 ## Known Issues
