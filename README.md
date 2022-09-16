@@ -129,11 +129,40 @@ cds watch
 2. **CTRL+Click** the **http://localhost:4004** link in the terminal to open the **service home page** in a new tab
 > **NOTE**: you must **allow pop-ups** for your **BAS URL** in your browser in order to get the new tab to be properly opened.
 3. Click on the **User** link
-4. When prompted to **Sign in** type 
+4. When prompted to **Sign in** type **john** as the **Username** and click **Sign in**
 5. You should see the **information from your user** in JSON format like demonstrated below:
 <p align="center"><img src="https://i.imgur.com/DQUnWGg.png" alt="User information"/></p>
 
-6. Click on the other to links (**IdP** and **Authorization**) to check whether they are working fine as well
+6. Click on the other two links (**IdP** and **Authorization**) to check whether they are working fine as well
+7. In the **Terminal** press **CTRL+C** to terminate the service
+
+### Deploy Application to Cloud Foundry
+1. From the **Explorer** open the **mta.yaml** file
+2. Search for the **[your BTP subdomain]** string and replace it with the **subdomain** of **your BTP subaccont**
+> **HINT**: you can find the **subdomain name** in the **Overview** page of your subaccount in the **BTP cockpit**
+3. In the **Explorer** right-click on the **mta.yaml** file and select **Build MTA Project**
+4. When the build process finishes an **mta_archives** directory will appear in the **Explorer**
+6. Expand the **mta_archives** directory
+7. Right-click the  **user-mngr_1.0.0.mtar** and select **Deploy MTA Archive**
+
+### Set the Application's Environment Variables
+1. Set the **APP_AUTHS** environment variable:
+```
+cf set-env user-mngr-srv APP_AUTHS { "ID": 1, "name": "GenericApp_Administrator", "description": "Administrator of a generic application" }|{ "ID": 2, "name": "GenericApp_User", "description": "User of a generic application" }
+```
+2. Set the **DEFAULT_AUTH** environment variable:
+```
+cf set-env user-mngr-srv DEFAULT_AUTH 2
+```
+
+### Test the Application in Cloud Foundry
+1. On the **left-hand pane** of your **BTP cockpit**, click on **HTML5 applications**
+> **NOTE**: the applications will be listed only if you have at least **SAP Launchpad Service** enabled in your subaccount (please, see the **Requirements** section).
+2. Click on the **usermngr** link
+3. The **Fiori Elements UI** of the service will open in a new tab
+4. You can use this UI to **fully test** the microservice: **create**, **update** and/or **delete** users of your application (users who have the **GenericApp role collections** assigned)
+
+> **FINAL NOTE**: having the application deployed to the **HTML5 apps repository** you can optionally add it to a **SAP Launchpad Service site**.
 
 ## Known Issues
 No known issues.
