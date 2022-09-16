@@ -33,7 +33,7 @@ cd user-mngr && cf login
 ```
 2. Create the **Destination** service:
 ```
-cf create-service destination lite xsuaa-dest
+cf create-service destination lite dest-svc
 ```
 3. Create the **XSUAA** service (**application plan**):
 ```
