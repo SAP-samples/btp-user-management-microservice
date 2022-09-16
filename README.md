@@ -148,7 +148,7 @@ cds watch
 ### Set the Application's Environment Variables
 1. Set the **APP_AUTHS** environment variable:
 ```
-cf set-env user-mngr-srv APP_AUTHS { "ID": 1, "name": "GenericApp_Administrator", "description": "Administrator of a generic application" }|{ "ID": 2, "name": "GenericApp_User", "description": "User of a generic application" }
+cf set-env user-mngr-srv APP_AUTHS '{ "ID": 1, "name": "GenericApp_Administrator", "description": "Administrator of a generic application" }|{ "ID": 2, "name": "GenericApp_User", "description": "User of a generic application" }'
 ```
 2. Set the **DEFAULT_AUTH** environment variable:
 ```
