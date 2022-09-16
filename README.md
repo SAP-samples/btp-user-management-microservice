@@ -77,6 +77,24 @@ mv default.env .env
 ```
 
 ### Create the Destination to the XSUAA API
+1. Display the **XSUAA (apiaaccess plan) service key**:
+```
+cf service-key xsuaa-api xsuaa-api-sk
+```
+2. Take note (**copy**) the following **service key properties**:
+ - apiurl
+ - clientid
+ - clientsecret
+ - url
+3. Open the **BTP cockpit** and access **your subaccount** (same subaccount used to start the **BAS Dev Space**)
+4. On the **left-hand pane** expand the **Connectivity** node
+5. Click on **Destinations**
+6. Click on **New Destination**
+7. Fill-in the **required information** like demonstrated below:
+<p align="center"><img src="https://i.imgur.com/YOMu9hd.png" alt="XSUAA API destination"/></p>
+
+8. Click **Save**
+
 
 
 ## Known Issues
