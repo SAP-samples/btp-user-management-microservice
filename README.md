@@ -52,6 +52,31 @@ cf create-service-key xsuaa-api xsuaa-api-sk
 ```
 
 ### Bind Destination and XSUAA (application) Services to the CAP Project
+1. Temporarily rename the **.env** file to **default.env**:
+```
+mv .env default.env
+```
+2. On the **left-hand pahe** of BAS click on the **Cloud Foundry: Targets** icon (small lightbulb)
+3. Expand the **Services** node
+4. Right-click the **dest-svc (destination)** item
+5. Select **Bind a service to a locally run application**
+6. In the **dialog** select the **user-mngr** directory
+7. Click **Select folder for .env file**
+8. Repeat steps 4 to 7 for the **xsuaa-svc (xsuaa)** item
+9. Go back to the **Explorer**, open the **recently created .env** file and adjust its contents to become a JSON object like demonstrated below:
+![VCAP_SERVICES JSON object](https://i.imgur.com/VYqDurS.png "VCAP_SERVICES JSON object")
+10. Rename the **.env** file to **default-env.json**:
+```
+mv .env default-env.json
+```
+> **HINT**: you can open the **recently renamed file** (default-env.json) and format the JSON content with **ALT+Shift+F** for better visualization.
+11. Rename the **default.env** file back to **.env**
+```
+mv default.env .env
+```
+
+### Create the Destination to the XSUAA API
+
 
 ## Known Issues
 No known issues.
