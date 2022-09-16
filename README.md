@@ -64,6 +64,7 @@ mv .env default.env
 7. Click **Select folder for .env file**
 8. Repeat steps 4 to 7 for the **xsuaa-svc (xsuaa)** item
 9. Go back to the **Explorer**, open the **recently created .env** file and adjust its contents to become a JSON object like demonstrated below:
+
 ![VCAP_SERVICES JSON object](https://i.imgur.com/VYqDurS.png "VCAP_SERVICES JSON object")
 10. Rename the **.env** file to **default-env.json**:
 ```
