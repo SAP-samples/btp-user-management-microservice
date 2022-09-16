@@ -17,6 +17,7 @@ This sample code aims to help SAP developers (customers or partners) to develop 
 1. Access your **SAP Business Application Studio** full-stack cloud development **Dev Space**
 2. Open a new terminal (if not yet opened): **Terminal** > **New Terminal**
 3. From the default **projects** folder, create the project directory:
+> **NOTE**: if you have not set the **projects** folder to become your **current workspace** in BAS your terminal might end-up in the **user** folder. So, do `cd projects` before executing the command below.   
 ```
 mkdir usr-mngr
 ```
