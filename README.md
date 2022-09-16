@@ -6,6 +6,9 @@
 ## Description
 This sample code aims to help SAP developers (customers or partners) to develop **secure applications** on **SAP Business Technology Platform** using the **Authorization and Trust Management Service (XSUAA) APIs** from **Cloud Foundry**. The code is developed using the **SAP Cloud Application Programming Model (CAP) NodeJS framework** and implements a **microservice** to **manage business applications' users and their respective authorizations** with a simple **SAP Fiori Elements UI** for testing.
 
+## Solution Architecture
+![BTP User Management Microservice Architecture](https://i.imgur.com/iaa5IXO.png "BTP User Management Microservice")
+
 ## Requirements
 - SAP Business Technology Platform **productive subaccount** (user management is not possible on trial) with Cloud Foundry environment enabled
 - SAP Business Application Studio entitlement / subscription (**Full Stack Cloud Application Dev Space**)
@@ -25,6 +28,7 @@ mkdir user-mngr
 ```
 git clone https://github.com/SAP-samples/btp-user-management-microservice.git user-mngr
 ```
+
 ### Create the Required Service Instances
 1. Login to **Cloud Foundry**:
 ```
@@ -46,6 +50,7 @@ cf create-service xsuaa apiaccess xsuaa-api
 ```
 cf create-service-key xsuaa-api xsuaa-api-sk
 ```
+
 ### Bind Destination and XSUAA (application) Services to the CAP Project
 
 ## Known Issues
