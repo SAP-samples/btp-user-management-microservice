@@ -66,6 +66,7 @@ mv .env default.env
 9. Go back to the **Explorer**, open the **recently created .env** file and adjust its contents to become a JSON object like demonstrated below:
 
 ![VCAP_SERVICES JSON object](https://i.imgur.com/VYqDurS.png "VCAP_SERVICES JSON object")
+
 10. Rename the **.env** file to **default-env.json**:
 ```
 mv .env default-env.json
