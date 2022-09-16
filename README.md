@@ -19,7 +19,7 @@ This sample code aims to help SAP developers (customers or partners) to develop 
 3. From the default **projects** folder, create the project directory:
 > **NOTE**: if you have not set the **projects** folder to become your **current workspace** in BAS your terminal might end-up in the **user** folder. So, do `cd projects` before executing the command below.   
 ```
-mkdir usr-mngr
+mkdir user-mngr
 ```
 3. Clone this repo into the recently created directory:
 ```
