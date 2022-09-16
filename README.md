@@ -45,7 +45,7 @@ cf create-service xsuaa apiaccess xsuaa-api
 ```
 5. Create the **XSUAA** service (**apiaccess plan**) **service key**:
 ```
-cf create-service-key xsuaap-api xsuaap-api-sk  
+cf create-service-key xsuaa-api xsuaa-api-sk
 ```
 
 ### Bind Destination and XSUAA (application) Services to the CAP Project
