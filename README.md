@@ -25,7 +25,6 @@ mkdir user-mngr
 ```
 git clone https://github.com/SAP-samples/btp-user-management-microservice.git user-mngr
 ```
-
 ### Create the Required Service Instances
 1. Login to **Cloud Foundry**:
 ```
@@ -47,7 +46,6 @@ cf create-service xsuaa apiaccess xsuaa-api
 ```
 cf create-service-key xsuaa-api xsuaa-api-sk
 ```
-
 ### Bind Destination and XSUAA (application) Services to the CAP Project
 
 ## Known Issues
