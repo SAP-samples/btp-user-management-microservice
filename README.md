@@ -11,7 +11,7 @@ This sample code aims to help SAP developers (customers or partners) to develop 
 ![BTP User Management Microservice Architecture](https://i.imgur.com/iaa5IXO.png "BTP User Management Microservice")
 
 ## Requirements
-- SAP Business Technology Platform **productive subaccount** (user management is not possible on trial) with Cloud Foundry environment enabled
+- SAP Business Technology Platform **subaccount** (productive or trial) with Cloud Foundry environment enabled
 - SAP Business Application Studio entitlement / subscription (**Full Stack Cloud Application Dev Space**)
 - SAP Launchpad Service entitlement / subscription
 
