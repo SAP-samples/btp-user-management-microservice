@@ -43,7 +43,7 @@ cf create-service destination lite dest-svc
 ```
 cf create-service xsuaa application xsuaa-svc -c xs-security.json
 ```
-4. Create the **XSUAA** service (**apiaccess plan**) and a respective **service key**:
+4. Create the **XSUAA** service (**apiaccess plan**):
 ```
 cf create-service xsuaa apiaccess xsuaa-api
 ```
@@ -57,7 +57,7 @@ cf create-service-key xsuaa-api xsuaa-api-sk
 ```
 mv .env default.env
 ```
-2. On the **left-hand pahe** of BAS click on the **Cloud Foundry: Targets** icon (small lightbulb)
+2. On the **left-hand pane** of BAS click on the **Cloud Foundry: Targets** icon (small lightbulb)
 3. Expand the **Services** node
 4. Right-click the **dest-svc (destination)** item
 5. Select **Bind a service to a locally run application**
