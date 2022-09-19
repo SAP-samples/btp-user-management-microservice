@@ -141,7 +141,7 @@ cds watch
 2. Search for the **[your BTP subdomain]** string and replace it with the **subdomain** of **your BTP subaccont**
 > **HINT**: you can find the **subdomain name** in the **Overview** page of your subaccount in the **BTP cockpit**
 3. In the **Explorer** right-click on the **mta.yaml** file and select **Build MTA Project**
-4. When the build process finishes an **mta_archives** directory will appear in the **Explorer**
+4. When the build process finishes, an **mta_archives** directory will appear in the **Explorer**
 6. Expand the **mta_archives** directory
 7. Right-click the  **user-mngr_1.0.0.mtar** and select **Deploy MTA Archive**
 
