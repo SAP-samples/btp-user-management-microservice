@@ -1,4 +1,5 @@
-# BTP User Management Microservice
+# SAP BTP User Management Microservice
+[![License: Apache2](https://img.shields.io/badge/License-Apache2-green.svg)](https://opensource.org/licenses/Apache-2.0)
 <!--- Register repository https://api.reuse.software/register, then add REUSE badge:
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/REPO-NAME)](https://api.reuse.software/info/github.com/SAP-samples/REPO-NAME)
 -->
@@ -167,6 +168,10 @@ cf restage user-mngr-srv
 4. You can use this UI to **fully test** the microservice: **create**, **update** and/or **delete** users of your application (users who have the **GenericApp role collections** assigned)
 
 > **FINAL NOTE**: having the application deployed to the **HTML5 apps repository** you can optionally add it to a **SAP Launchpad Service site**.
+
+## Code Details
+
+You can find a detailed explanaton about the code of this project in [**this blog post**](https://blogs.sap.com/2022/09/22/build-a-user-management-microservice-in-btp-with-cap).
 
 ## Known Issues
 No known issues.
