@@ -8,7 +8,7 @@ entity User {
         lastName       : String;
         displayName    : String;
         eMail          : String;
-        origin         : Association to one IdP;
+    key origin         : Association to one IdP;
         authorizations : Composition of many UserAuthorization
                              on authorizations.parent = $self;
         isActive       : Boolean;

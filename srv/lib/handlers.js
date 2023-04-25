@@ -39,14 +39,14 @@ async function resetDB(req) {
 }
 
 // Find a BTP user based on the User Name
-async function findUser(userName) {
+async function findUser(userName, origin) {
     // Load all BTP users
-    const xsuaaResp = await xsuaa.get('/Users');
+    const xsuaaResp = await xsuaa.get('/Users?count=500');
     const xsuaaUsers = xsuaaResp.resources;
 
-    // Search for the BTP user with the given User Name and, if found, fetch the BTP ID
+    // Search for the BTP user with the given User Name / IdP and, if found, fetch the BTP ID
     var btpId = null;
-    const user = xsuaaUsers.find(user => user.userName.toLowerCase() === userName.toLowerCase() );
+    const user = xsuaaUsers.find(user => user.userName.toLowerCase() === userName.toLowerCase() && user.origin === origin);
     if (user) {
         btpId = user.id;
     }
@@ -143,7 +143,7 @@ async function deleteUser(btpId, groups) {
 // Fetch all BTP users which are assigned to the app's role collections
 async function getUsers() {
     // Fetch all BTP users
-    const xsuaaResp = await xsuaa.get('/Users');
+    const xsuaaResp = await xsuaa.get('/Users?count=500');
     const xsuaaUsers = xsuaaResp.resources;
 
     // Filter only users assigned to the app's role collections 
@@ -159,6 +159,7 @@ async function getUsers() {
                     userAuth.push(
                         {
                             parent_userName: user.userName,
+                            parent_origin_originKey: user.origin,
                             authorization_ID: auths[group.value]
                         }
                     );
@@ -257,7 +258,7 @@ async function loadIdPs(req) {
 async function loadAuthorizations(req) {
     // Fetch Users from the BTP subaccount
     const auths = getAuthorizations();
-    // Insert Users into SQLite in-memory DB
+    // Insert Authorizations into SQLite in-memory DB
     if (auths.length > 0) {
         await cds.tx(req).run(INSERT.into(db_namespace + 'Authorization').entries(auths));
     }
@@ -310,6 +311,7 @@ function beforeSaveUser(req) {
             req.data.authorizations.push(
                 {
                     parent_userName: req.data.userName,
+                    parent_origin_originKey : req.data.origin_originKey,
                     authorization_ID: process.env.DEFAULT_AUTH
                 }
             );
@@ -329,9 +331,9 @@ async function beforePatchUser(req) {
     try {
         // If either first name or last name have been patched, the display name is updated accordingly
         if (req.data.firstName || req.data.lastName) {
-            const user = await cds.tx(req).run(SELECT.one.from(srv_namespace + 'User.drafts', { userName: req.data.userName }).columns(['firstName', 'lastName']).where({ IsActiveEntity: false }));
+            const user = await cds.tx(req).run(SELECT.one.from(srv_namespace + 'User.drafts', { userName: req.data.userName, origin_originKey : req.data.origin_originKey }).columns(['firstName', 'lastName']).where({ IsActiveEntity: false }));
             const displayName = (req.data.firstName) ? req.data.firstName + ' ' + ((user.lastName === null) ? '' : user.lastName) : ((user.firstName === null) ? '' : user.firstName) + ' ' + req.data.lastName;
-            await cds.tx(req).run(UPDATE.entity(srv_namespace + 'User.drafts', { userName: req.data.userName }).with({ displayName: displayName }).where({ IsActiveEntity: false }));
+            await cds.tx(req).run(UPDATE.entity(srv_namespace + 'User.drafts', { userName: req.data.userName, origin_originKey : req.data.origin_originKey }).with({ displayName: displayName }).where({ IsActiveEntity: false }));
         }
     } catch (err) {
         req.error(err.code, err.message);
@@ -346,7 +348,7 @@ async function afterCreateUser(data, req) {
         const groups = await readAuthorizations(data.authorizations, req);
 
         // Search for user in BTP based on User Name
-        const btpId = await findUser(data.userName);
+        const btpId = await findUser(data.userName, data.origin_originKey);
         if (btpId === null) {
             // If user does not exist in BTP, then it's created and the correponding ID in BTP
             // is updated in the SQLite in-memory DB. The users' cache is also updated. 
@@ -360,7 +362,7 @@ async function afterCreateUser(data, req) {
                 emails: [
                     {
                         value: data.eMail,
-                        primary: false
+                        primary: true
                     }
                 ],
                 active: data.isActive,
@@ -369,7 +371,7 @@ async function afterCreateUser(data, req) {
             };
 
             const btpId = await createUser(user, groups);
-            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: user.userName }).with({ btpId: btpId }));
+            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: data.userName, origin_originKey : data.origin_originKey }).with({ btpId: btpId }));
         } else {
             // If the user exists in BTP, then it's data is updated in BTP (properties and groups - role collections),
             // and, as the entity in the SQLite in-memory DB has null BTP ID, it's updated with the user ID from BTP
@@ -383,7 +385,7 @@ async function afterCreateUser(data, req) {
                 emails: [
                     {
                         value: data.eMail,
-                        primary: false
+                        primary: true
                     }
                 ],
                 active: data.isActive,
@@ -392,7 +394,7 @@ async function afterCreateUser(data, req) {
             };
 
             await updateUser(user, groups);
-            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: req.data.userName }).with({ btpId: btpId }));
+            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: data.userName, origin_originKey : data.origin_originKey }).with({ btpId: btpId }));
         }
     } catch (err) {
         req.error(err.code, err.message);
@@ -416,7 +418,7 @@ async function afterUpdateUser(data, req) {
             emails: [
                 {
                     value: data.eMail,
-                    primary: false
+                    primary: true
                 }
             ],
             active: data.isActive,
@@ -435,8 +437,8 @@ async function afterUpdateUser(data, req) {
 async function beforeDeletUser(req) {
     try {
         // Fetch user's groups (role collections)
-        const user = await cds.tx(req).run(SELECT.one.from(db_namespace + 'User', { userName: req.data.userName }).columns(['btpId']));
-        const userAuth = await cds.tx(req).run(SELECT.from(db_namespace + 'UserAuthorization').columns(['authorization_ID as ID']).where({ parent_userName: req.data.userName }));
+        const user = await cds.tx(req).run(SELECT.one.from(db_namespace + 'User', { userName: req.data.userName, origin_originKey : req.data.origin_originKey }).columns(['btpId']));
+        const userAuth = await cds.tx(req).run(SELECT.from(db_namespace + 'UserAuthorization').columns(['authorization_ID as ID']).where({ parent_userName: req.data.userName }).and({ parent_origin_originKey: req.data.origin_originKey }));
         const auths = [];
         userAuth.forEach(auth => { auths.push(auth.ID) });
         const groups = await cds.tx(req).run(SELECT.from(db_namespace + 'Authorization').columns(['name']).where({ ID: { 'IN': auths } }));
