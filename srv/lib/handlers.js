@@ -299,6 +299,18 @@ async function getData(req) {
     }
 }
 
+// User's BEFORE NEW event handler (for Fiori Elements compatibility) 
+async function beforeNewUser(req) {
+    try {
+        const user = await cds.tx(req).run(SELECT.one.from(db_namespace + 'User', { userName: req.data.userName, origin_originKey: req.data.origin_originKey }).columns(['btpId']));
+        if (user) {
+            req.error(400, 'User "' + req.data.userName + '" already exists in IdP "' + req.data.origin_originKey + '".');
+        }
+    } catch (err) {
+        req.error(400, err.message);
+    }
+}
+
 // User's BEFORE SAVE event handler (for Fiori Elements compatibility) 
 function beforeSaveUser(req) {
     try {
@@ -311,7 +323,7 @@ function beforeSaveUser(req) {
             req.data.authorizations.push(
                 {
                     parent_userName: req.data.userName,
-                    parent_origin_originKey : req.data.origin_originKey,
+                    parent_origin_originKey: req.data.origin_originKey,
                     authorization_ID: process.env.DEFAULT_AUTH
                 }
             );
@@ -331,9 +343,9 @@ async function beforePatchUser(req) {
     try {
         // If either first name or last name have been patched, the display name is updated accordingly
         if (req.data.firstName || req.data.lastName) {
-            const user = await cds.tx(req).run(SELECT.one.from(srv_namespace + 'User.drafts', { userName: req.data.userName, origin_originKey : req.data.origin_originKey }).columns(['firstName', 'lastName']).where({ IsActiveEntity: false }));
+            const user = await cds.tx(req).run(SELECT.one.from(srv_namespace + 'User.drafts', { userName: req.data.userName, origin_originKey: req.data.origin_originKey }).columns(['firstName', 'lastName']).where({ IsActiveEntity: false }));
             const displayName = (req.data.firstName) ? req.data.firstName + ' ' + ((user.lastName === null) ? '' : user.lastName) : ((user.firstName === null) ? '' : user.firstName) + ' ' + req.data.lastName;
-            await cds.tx(req).run(UPDATE.entity(srv_namespace + 'User.drafts', { userName: req.data.userName, origin_originKey : req.data.origin_originKey }).with({ displayName: displayName }).where({ IsActiveEntity: false }));
+            await cds.tx(req).run(UPDATE.entity(srv_namespace + 'User.drafts', { userName: req.data.userName, origin_originKey: req.data.origin_originKey }).with({ displayName: displayName }).where({ IsActiveEntity: false }));
         }
     } catch (err) {
         req.error(err.code, err.message);
@@ -371,7 +383,7 @@ async function afterCreateUser(data, req) {
             };
 
             const btpId = await createUser(user, groups);
-            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: data.userName, origin_originKey : data.origin_originKey }).with({ btpId: btpId }));
+            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: data.userName, origin_originKey: data.origin_originKey }).with({ btpId: btpId }));
         } else {
             // If the user exists in BTP, then it's data is updated in BTP (properties and groups - role collections),
             // and, as the entity in the SQLite in-memory DB has null BTP ID, it's updated with the user ID from BTP
@@ -394,7 +406,7 @@ async function afterCreateUser(data, req) {
             };
 
             await updateUser(user, groups);
-            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: data.userName, origin_originKey : data.origin_originKey }).with({ btpId: btpId }));
+            await cds.tx(req).run(UPDATE.entity(db_namespace + 'User', { userName: data.userName, origin_originKey: data.origin_originKey }).with({ btpId: btpId }));
         }
     } catch (err) {
         req.error(err.code, err.message);
@@ -437,7 +449,7 @@ async function afterUpdateUser(data, req) {
 async function beforeDeletUser(req) {
     try {
         // Fetch user's groups (role collections)
-        const user = await cds.tx(req).run(SELECT.one.from(db_namespace + 'User', { userName: req.data.userName, origin_originKey : req.data.origin_originKey }).columns(['btpId']));
+        const user = await cds.tx(req).run(SELECT.one.from(db_namespace + 'User', { userName: req.data.userName, origin_originKey: req.data.origin_originKey }).columns(['btpId']));
         const userAuth = await cds.tx(req).run(SELECT.from(db_namespace + 'UserAuthorization').columns(['authorization_ID as ID']).where({ parent_userName: req.data.userName }).and({ parent_origin_originKey: req.data.origin_originKey }));
         const auths = [];
         userAuth.forEach(auth => { auths.push(auth.ID) });
@@ -467,6 +479,7 @@ async function refreshData(req) {
 // Exported functions
 module.exports = {
     getData,
+    beforeNewUser,
     beforeSaveUser,
     beforePatchUser,
     afterCreateUser,
