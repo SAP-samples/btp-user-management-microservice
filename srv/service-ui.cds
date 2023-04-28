@@ -231,14 +231,6 @@ annotate srv.User @(Common.SideEffects #NameChanged : {
 });
 
 annotate srv.UserAuthorization with {
-    ID            @(
-        title     : 'User Authorization ID',
-        UI.Hidden : true,
-        Common    : {Text : {
-            $value                 : authorization.name,
-            ![@UI.TextArrangement] : #TextOnly
-        }}
-    );
     parent        @(
         title     : 'User Name',
         UI.Hidden : true
@@ -282,10 +274,6 @@ annotate srv.UserAuthorization @(Capabilities : {
 });
 
 annotate srv.IdP with {
-    ID        @(
-        title     : 'Idp ID',
-        UI.Hidden : true
-    );
     originKey @(
         title       : 'IdP Key',
         Common.Text : {
