@@ -4,7 +4,7 @@
 
 ## Description
 This sample code aims to help SAP developers (customers or partners) to develop **secure applications** on **SAP Business Technology Platform** using the **Authorization and Trust Management Service (XSUAA) APIs** from **Cloud Foundry**. The code is developed using the **SAP Cloud Application Programming Model (CAP) NodeJS framework** and implements a **microservice** to **manage business applications' users and their respective authorizations** with a simple **SAP Fiori Elements UI** for testing.
-> **IMPORTANT NOTE**: please be aware that the code in this repository is targeted to experienced CAP developers
+> **IMPORTANT NOTE**: please be aware that the code in this repository is targeted to experienced CAP developers and is provided as is, serving exclusively as a reference for further developments
 
 ## Solution Architecture
 ![BTP User Management Microservice Architecture](https://i.imgur.com/iaa5IXO.png "BTP User Management Microservice")
@@ -12,7 +12,7 @@ This sample code aims to help SAP developers (customers or partners) to develop 
 ## Requirements
 - SAP Business Technology Platform **subaccount** (productive or trial) with **Cloud Foundry** environment enabled
 - SAP Business Application Studio entitlement / subscription (**Full Stack Cloud Application Dev Space**)
-- SAP Launchpad Service entitlement / subscription
+- SAP Workzone Standard (formerly SAP Launchpad Service) entitlement / subscription
 
 ## Download and Installation
 
@@ -144,28 +144,14 @@ cds watch
 6. Expand the **mta_archives** directory
 7. Right-click the  **user-mngr_1.0.0.mtar** and select **Deploy MTA Archive**
 
-### Set the Application's Environment Variables
-1. Set the **APP_AUTHS** environment variable:
-```
-cf set-env user-mngr-srv APP_AUTHS '{ "ID": 1, "name": "GenericApp_Administrator", "description": "Administrator of a generic application" }|{ "ID": 2, "name": "GenericApp_User", "description": "User of a generic application" }'
-```
-2. Set the **DEFAULT_AUTH** environment variable:
-```
-cf set-env user-mngr-srv DEFAULT_AUTH 2
-```
-3. **Restage** the service:
-```
-cf restage user-mngr-srv
-```
-
 ### Test the Application in Cloud Foundry
 1. On the **left-hand pane** of your **BTP cockpit**, click on **HTML5 applications**
-> **NOTE**: the applications will be listed only if you have at least **SAP Launchpad Service** enabled in your subaccount (please, see the **Requirements** section).
+> **NOTE**: the applications will be listed only if you have at least **SAP Workzone Standard (formerly SAP Launchpad Service)** enabled in your subaccount (please, see the **Requirements** section).
 2. Click on the **usermngr** link
 3. The **Fiori Elements UI** of the service will open in a new tab
 4. You can use this UI to **fully test** the microservice: **create**, **update** and/or **delete** users of your application (users who have the **GenericApp role collections** assigned)
 
-> **FINAL NOTE**: having the application deployed to the **HTML5 apps repository** you can optionally add it to a **SAP Launchpad Service site**.
+> **FINAL NOTE**: having the application deployed to the **HTML5 apps repository** you can optionally add it to a **SAP Workzone Standard site**.
 
 ## Code Details
 

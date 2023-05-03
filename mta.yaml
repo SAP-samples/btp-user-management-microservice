@@ -24,6 +24,9 @@ modules:
     disk-quota: 256M
   build-parameters:
     builder: npm-ci
+  properties:
+    APP_AUTHS: '{ "ID": 1, "name": "GenericApp_Administrator", "description": "Administrator of a generic application" }|{ "ID": 2, "name": "GenericApp_User", "description": "User of a generic application" }'
+    DEFAULT_AUTH: 2
 - name: user-mngr-destination-content
   type: com.sap.application.content
   requires:
@@ -86,7 +89,7 @@ resources:
     service-name: user-mngr-html5-app-host-service
     service-plan: app-host
 - name: uaa_user-mngr
-  type: org.cloudfoundry.existing-service
+  type: org.cloudfoundry.managed-service
   parameters:
     path: ./xs-security.json
     service: xsuaa
