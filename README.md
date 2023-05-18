@@ -60,18 +60,17 @@ mv .env default.env
 3. Expand the **Services** node
 4. Right-click the **dest-svc (destination)** item
 5. Select **Bind a service to a locally run application**
-6. In the **dialog** select the **user-mngr** directory
-7. Click **Select folder for .env file**
-8. Repeat steps 4 to 7 for the **xsuaa-svc (xsuaa)** item
-9. Go back to the **Explorer**, open the **recently created .env** file and adjust its contents to become a JSON object like demonstrated below:
+6. From the **directories list** select the **user-mngr** directory and click **OK**
+7. Repeat steps 4 to 6 for the **xsuaa-svc (xsuaa)** item
+8. Go back to the **Explorer**, open the **recently created .env** file and adjust its contents to become a JSON object like demonstrated below:
 <p align="center"><img src="https://i.imgur.com/VYqDurS.png" alt="VCAP_SERVICES JSON object"/></p>
 
-10. Rename the **.env** file to **default-env.json**:
+9. Rename the **.env** file to **default-env.json**:
 ```
 mv .env default-env.json
 ```
 > **HINT**: you can open the **recently renamed file** (default-env.json) and format the JSON content with **ALT+Shift+F** for better visualization.
-11. Rename the **default.env** file back to **.env**
+10. Rename the **default.env** file back to **.env**
 ```
 mv default.env .env
 ```
