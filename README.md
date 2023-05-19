@@ -169,7 +169,6 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 6. In the **dialog**, serch for the **Generic Multi-tenant Application** in the **dropdown list** and click on the **Create** button at the bottom
 7. After successfully subscribed, on the **left-hand pane** expand the **Security** node and click on **Users**
 8. In the **users list** on the right, click on **your user**
-> **HINT**: if the users list is to long and you find it difficult to locate your user, you can **use the search box** at the top.
 9. In the **user's details** at the right, click on **Assign Role Collection**
 10. Find the role collections starting with **GenericMtxApp**
 11. Check both **role collections**
