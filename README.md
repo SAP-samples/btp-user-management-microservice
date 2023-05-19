@@ -56,7 +56,7 @@ cf create-service-key xsuaa-api xsuaa-api-sk
 ```
 mv .env default.env
 ```
-2. On the **left-hand pane** of BAS click on the **Cloud Foundry: Targets** icon (small lightbulb)
+2. On the **left-hand pane** of BAS click on the **Cloud Foundry** icon (small lightbulb)
 3. Expand the **Services** node
 4. Right-click the **dest-svc (destination)** item
 5. Select **Bind a service to a locally run application**
