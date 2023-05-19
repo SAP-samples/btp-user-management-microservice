@@ -173,7 +173,7 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 10. Find the role collections starting with **GenericMtxApp**
 11. Check both **role collections**
 12. Click on **Assign Role Collection**
-> **NOTE**: you had to do this assignment again in the subscriber subaccount in order to have the appropriate permission to access the application from there.
+> **NOTE**: you had to do this assignment again in the **subscriber subaccount** in order to have the appropriate permission to access the application from there.
 13. On the **left-hand pane** click on **Instances and Subscriptions**
 14. Click on the **Go to Application** icon next to the **Generic Multi-tenant Application** subscription. The application will open in a **new tab**.
 > **NOTE**: at this moment you'll see the users from the **provider subaccount** where you the deployed the microservice (actually, only your own user as it's the one you assigned the **GenericMtxApp role collections** in the provider).
