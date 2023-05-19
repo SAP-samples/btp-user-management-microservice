@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="user.mngr.srv.UserMngrService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="User" EntityType="user.mngr.srv.UserMngrService.User">
+                    <NavigationPropertyBinding Path="origin" Target="IdP"/>
+                    <NavigationPropertyBinding Path="authorizations" Target="UserAuthorization"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="UserAuthorization" EntityType="user.mngr.srv.UserMngrService.UserAuthorization">
+                    <NavigationPropertyBinding Path="parent" Target="User"/>
+                    <NavigationPropertyBinding Path="authorization" Target="Authorization"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="UserAuthorization"/>
+                </EntitySet>
+                <EntitySet Name="IdP" EntityType="user.mngr.srv.UserMngrService.IdP"/>
+                <EntitySet Name="Authorization" EntityType="user.mngr.srv.UserMngrService.Authorization"/>
+            </EntityContainer>
+            <EntityType Name="User">
+                <Key>
+                    <PropertyRef Name="userName"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="userName" Type="Edm.String" Nullable="false"/>
+                <Property Name="btpId" Type="Edm.String"/>
+                <Property Name="externalId" Type="Edm.String"/>
+                <Property Name="firstName" Type="Edm.String"/>
+                <Property Name="lastName" Type="Edm.String"/>
+                <Property Name="displayName" Type="Edm.String"/>
+                <Property Name="eMail" Type="Edm.String"/>
+                <NavigationProperty Name="origin" Type="user.mngr.srv.UserMngrService.IdP">
+                    <ReferentialConstraint Property="origin_originKey" ReferencedProperty="originKey"/>
+                </NavigationProperty>
+                <Property Name="origin_originKey" Type="Edm.String"/>
+                <NavigationProperty Name="authorizations" Type="Collection(user.mngr.srv.UserMngrService.UserAuthorization)" Partner="parent">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <Property Name="isActive" Type="Edm.Boolean"/>
+                <Property Name="isVerified" Type="Edm.Boolean"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="user.mngr.srv.UserMngrService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="user.mngr.srv.UserMngrService.User"/>
+            </EntityType>
+            <EntityType Name="UserAuthorization">
+                <Key>
+                    <PropertyRef Name="parent_userName"/>
+                    <PropertyRef Name="authorization_ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <NavigationProperty Name="parent" Type="user.mngr.srv.UserMngrService.User" Partner="authorizations">
+                    <ReferentialConstraint Property="parent_userName" ReferencedProperty="userName"/>
+                </NavigationProperty>
+                <Property Name="parent_userName" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="authorization" Type="user.mngr.srv.UserMngrService.Authorization">
+                    <ReferentialConstraint Property="authorization_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="authorization_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="user.mngr.srv.UserMngrService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="user.mngr.srv.UserMngrService.UserAuthorization"/>
+            </EntityType>
+            <EntityType Name="IdP">
+                <Key>
+                    <PropertyRef Name="originKey"/>
+                </Key>
+                <Property Name="originKey" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Authorization">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="description" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="user.mngr.srv.UserMngrService.User"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="user.mngr.srv.UserMngrService.User"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="user.mngr.srv.UserMngrService.UserAuthorization"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="user.mngr.srv.UserMngrService.UserAuthorization"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="user.mngr.srv.UserMngrService.User"/>
+                <ReturnType Type="user.mngr.srv.UserMngrService.User"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="user.mngr.srv.UserMngrService.User"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="user.mngr.srv.UserMngrService.User"/>
+            </Action>
+            <Annotations Target="user.mngr.srv.UserMngrService.User">
+                <Annotation Term="UI.Identification">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="userName"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.HeaderInfo">
+                    <Record Type="UI.HeaderInfoType">
+                        <PropertyValue Property="TypeName" String="User"/>
+                        <PropertyValue Property="TypeNamePlural" String="Users"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="userName"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="displayName"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>externalId</PropertyPath>
+                        <PropertyPath>userName</PropertyPath>
+                        <PropertyPath>firstName</PropertyPath>
+                        <PropertyPath>lastName</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="externalId"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="userName"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="displayName"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="eMail"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="origin/name"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="isActive"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="isVerified"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="General">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="externalId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="firstName"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="lastName"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="eMail"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="isActive"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="isVerified"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="origin_originKey"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="ID" String="General"/>
+                            <PropertyValue Property="Label" String="General"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Authorizations"/>
+                            <PropertyValue Property="ID" String="Authorizations"/>
+                            <PropertyValue Property="Target" AnnotationPath="authorizations/@UI.LineItem#Authorizations"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Common.SideEffects" Qualifier="NameChanged">
+                    <Record Type="Common.SideEffectsType">
+                        <PropertyValue Property="SourceProperties">
+                            <Collection>
+                                <PropertyPath>firstName</PropertyPath>
+                                <PropertyPath>lastName</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="TargetProperties">
+                            <Collection>
+                                <String>displayName</String>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.EntityContainer/User">
+                <Annotation Term="Common.SideEffects" Qualifier="NameChanged">
+                    <Record Type="Common.SideEffectsType">
+                        <PropertyValue Property="SourceProperties">
+                            <Collection>
+                                <PropertyPath>firstName</PropertyPath>
+                                <PropertyPath>lastName</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="TargetProperties">
+                            <Collection>
+                                <String>displayName</String>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="user.mngr.srv.UserMngrService.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="user.mngr.srv.UserMngrService.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="user.mngr.srv.UserMngrService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/userName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="User Name"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/btpId">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+                <Annotation Term="Common.Label" String="BTP ID"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/externalId">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="External ID"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/firstName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="First Name"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/lastName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="Last Name"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/displayName">
+                <Annotation Term="Common.Label" String="Name"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/eMail">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="e-Mail"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/origin">
+                <Annotation Term="Common.Label" String="Origin IdP"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/origin_originKey">
+                <Annotation Term="Common.Text" Path="origin/name">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="IdP"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="origin_originKey"/>
+                                    <PropertyValue Property="ValueListProperty" String="originKey"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="Origin IdP"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/isActive">
+                <Annotation Term="Common.Label" String="Is Active"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/isVerified">
+                <Annotation Term="Common.Label" String="Is Verified"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/IsActiveEntity">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/HasActiveEntity">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/HasDraftEntity">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.User/DraftAdministrativeData">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization">
+                <Annotation Term="UI.HeaderInfo">
+                    <Record Type="UI.HeaderInfoType">
+                        <PropertyValue Property="TypeName" String="Authorization"/>
+                        <PropertyValue Property="TypeNamePlural" String="Authorizations"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="authorization/name"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="authorization/description"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.LineItem" Qualifier="Authorizations">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="authorization_ID"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="authorization/description"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="General">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="authorization_ID"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="authorization/description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="ID" String="General"/>
+                            <PropertyValue Property="Label" String="General"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Common.SideEffects" Qualifier="AuthorizationChanged">
+                    <Record Type="Common.SideEffectsType">
+                        <PropertyValue Property="SourceProperties">
+                            <Collection>
+                                <PropertyPath>authorization_ID</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="TargetEntities">
+                            <Collection>
+                                <NavigationPropertyPath>authorization</NavigationPropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.EntityContainer/UserAuthorization">
+                <Annotation Term="Common.SideEffects" Qualifier="AuthorizationChanged">
+                    <Record Type="Common.SideEffectsType">
+                        <PropertyValue Property="SourceProperties">
+                            <Collection>
+                                <PropertyPath>authorization_ID</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="TargetEntities">
+                            <Collection>
+                                <NavigationPropertyPath>authorization</NavigationPropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.DraftNode">
+                    <Record Type="Common.DraftNodeType">
+                        <PropertyValue Property="PreparationAction" String="user.mngr.srv.UserMngrService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.SearchRestrictions">
+                    <Record Type="Capabilities.SearchRestrictionsType">
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="true"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="true"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/parent">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+                <Annotation Term="Common.Label" String="User Name"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/parent_userName">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+                <Annotation Term="Common.Label" String="User Name"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/authorization">
+                <Annotation Term="Common.Label" String="Authorization"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/authorization_ID">
+                <Annotation Term="Common.Text" Path="authorization/name">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="Authorization"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="authorization_ID"/>
+                                    <PropertyValue Property="ValueListProperty" String="ID"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Common.Label" String="Authorization"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/IsActiveEntity">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/HasActiveEntity">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/HasDraftEntity">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.UserAuthorization/DraftAdministrativeData">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.IdP/originKey">
+                <Annotation Term="Common.Text" Path="name">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.Label" String="IdP Key"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.IdP/name">
+                <Annotation Term="Common.Label" String="Origin IdP"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.Authorization/ID">
+                <Annotation Term="Common.Text" Path="name">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Authorization"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.Authorization/name">
+                <Annotation Term="Common.Label" String="Authorization"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.Authorization/description">
+                <Annotation Term="Common.Label" String="Description"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData">
+                <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                </Annotations>
+                <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/DraftUUID">
+                    <Annotation Term="UI.Hidden" Bool="true"/>
+                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                    </Annotations>
+                    <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/CreationDateTime">
+                        <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                        </Annotations>
+                        <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/CreatedByUser">
+                            <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                            </Annotations>
+                            <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                </Annotations>
+                                <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/LastChangeDateTime">
+                                    <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                    </Annotations>
+                                    <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/LastChangedByUser">
+                                        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                        </Annotations>
+                                        <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/InProcessByUser">
+                                            <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                            </Annotations>
+                                            <Annotations Target="user.mngr.srv.UserMngrService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                </Annotations>
+                                            </Schema>
+                                        </edmx:DataServices>
+                                    </edmx:Edmx>

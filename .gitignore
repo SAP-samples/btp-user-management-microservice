@@ -1,0 +1,36 @@
+# CAP user-mngr
+_out
+*.db
+connection.properties
+default-*.json
+.cdsrc-private.json
+*-lock.json
+app/user-mngr/dist/
+gen/
+node_modules/
+target/
+resources/
+
+# Web IDE, App Studio
+.che/
+.gen/
+
+# MTA
+*_mta_build_tmp
+*.mtar
+mta_archives/
+
+# Other
+.DS_Store
+*.orig
+*.log
+
+*.iml
+*.flattened-pom.xml
+
+# IDEs
+# .vscode
+# .idea
+
+# auto generated wildcard
+user-mngr/.env

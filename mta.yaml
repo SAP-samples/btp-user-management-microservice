@@ -1,0 +1,135 @@
+_schema-version: "3.1"
+ID: user-mngr-mtx
+description: BTP user management microservice for any generic multi-tenant application.
+version: 1.0.0
+modules:
+- name: user-mngr-mtx-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: user-mngr-mtx-uaa
+  - name: user-mngr-mtx-dest
+  - name: user-mngr-mtx-registry
+  - name: app-api
+    properties:
+      APP_PROTOCOL: ~{app-protocol}
+      APP_URI: ~{app-uri}
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  - name: mtx-api
+    properties:
+      mtx-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    memory: 512M
+    disk-quota: 1024M
+  build-parameters:
+    builder: npm-ci
+    ignore:
+      - default-*.json
+      - .env
+      - "*node_modules*"
+      - package-lock.json
+  properties:
+    APP_AUTHS: '{ "ID": 1, "name": "GenericMtxApp_Administrator", "description": "Administrator of a generic multi-tenant application" }|{ "ID": 2, "name": "GenericMtxApp_User", "description": "User of a generic multi-tenant application" }'
+    DEFAULT_AUTH: 2
+- name: user-mngr-mtx-app
+  type: approuter.nodejs
+  path: app/user-mngr
+  build-parameters:
+    ignore:
+      - default-*.json
+      - .env
+      - "*node_modules*"
+      - package-lock.json
+  parameters:
+    memory: 256M
+    disk-quota: 1024M
+    keep-existing-routes: true
+  properties:
+    TENANT_HOST_PATTERN: '^(.*)-${default-uri}'
+    SAP_JWT_TRUST_ACL: [{ "clientid": "*", "identityzone": "sap-provisioning" }]
+    SEND_XFRAMEOPTIONS: false
+  requires:
+    - name: user-mngr-mtx-uaa
+    - name: srv-api
+      group: destinations
+      properties:
+        name: srv
+        url: ~{srv-url}
+        timeout: 600000
+        forwardAuthToken: true
+    - name: mtx-api
+      group: destinations
+      properties:
+        name: mtx
+        url: ~{mtx-url}
+        timeout: 600000
+  provides:
+    - name: app-api
+      properties:
+        app-protocol: ${protocol}
+        app-uri: ${default-uri}
+resources:
+- name: user-mngr-mtx-uaa
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: xsuaa
+    service-plan: application
+    path: ./xs-security.json
+- name: user-mngr-mtx-dest
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      init_data:
+        instance:
+          existing_destinations_policy: ignore
+          destinations:
+          - Name: user-mngr-mtx-app-cfapi
+            Description: CF Cloud Controller API
+            URL: ${controller-url}
+            Type: HTTP
+            ProxyType: Internet
+            Authentication: OAuth2Password
+            tokenServiceURL: ${authorization-url}/oauth/token
+            clientId: cf
+            clientSecret:
+            User: <SetValueInCockpit>
+            Password: <SetValueInCockpit>
+      version: 1.0.0
+    service: destination
+    service-name: user-mngr-mtx-dest
+    service-plan: lite
+- name: user-mngr-mtx-registry
+  type: org.cloudfoundry.managed-service
+  requires:
+    - name: user-mngr-mtx-uaa
+    - name: mtx-api
+  parameters:
+    service: saas-registry
+    service-plan: application
+    service-name: user-mngr-mtx-registry
+    config:
+      xsappname: generic-mtx-app
+      appName: user-mngr-mtx
+      displayName: 'Generic Multi-tenant Application'
+      description: 'Generic Multi-tenant Application'
+      category: 'SaaS Multitenant Reference Apps'
+      appUrls:
+        onSubscription: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/tenant/{tenantId}
+        getDependencies: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/dependencies
+        onSubscriptionAsync: false
+        onUnSubscriptionAsync: false
+        callbackTimeoutMillis: 300000
+parameters:
+  enable-parallel-deployments: true
+  keep-existing-routes: true
+  appname: user-mngr-mtx-[your BTP subdomain]
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install --production
+    - npx -p @sap/cds-dk cds build --production

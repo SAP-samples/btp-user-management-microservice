@@ -1,0 +1,25 @@
+{
+    "welcomeFile": "index.html",
+    "authenticationMethod": "route",
+    "routes": [
+        {
+            "source": "^/usr-mngr/(.*)$",
+            "authenticationType": "xsuaa",
+            "scope": "$XSAPPNAME.UserAdmin",
+            "destination": "srv"
+        }
+        ,
+        {
+            "source": "^/-/cds/.*",
+            "authenticationType": "none",
+            "destination": "mtx"
+        }
+        ,
+        {
+            "source": "^/(.*)$",
+            "authenticationType": "xsuaa",
+            "scope": "$XSAPPNAME.UserAdmin",
+            "localDir": "webapp"
+        }
+    ]
+}

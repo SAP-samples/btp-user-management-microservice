@@ -1,0 +1,199 @@
+{
+    "_version": "1.40.0",
+    "sap.app": {
+        "id": "usermngrmtx",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.7.1",
+            "toolsId": "e6cc6a3f-f1b9-4f3c-bef2-6a903691c9d5"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/usr-mngr/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "annotation"
+                    ],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            },
+            "annotation": {
+                "type": "ODataAnnotation",
+                "uri": "annotations/annotation.xml",
+                "settings": {
+                    "localUri": "annotations/annotation.xml"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "usermngrmtx-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "User",
+                    "action": "display",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "icon": ""
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.102.1",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "usermngrmtx.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "UserList",
+                    "target": "UserList"
+                },
+                {
+                    "pattern": "User({key}):?query:",
+                    "name": "UserObjectPage",
+                    "target": "UserObjectPage"
+                },
+                {
+                    "pattern": "User({key})/authorizations({key2}):?query:",
+                    "name": "AuthorizationObjectPage",
+                    "target": "AuthorizationObjectPage"
+                }
+            ],
+            "targets": {
+                "UserList": {
+                    "type": "Component",
+                    "id": "UserList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "User",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "User": {
+                                    "detail": {
+                                        "route": "UserObjectPage"
+                                    }
+                                }
+                            },
+                            "initialLoad": true
+                        }
+                    }
+                },
+                "UserObjectPage": {
+                    "type": "Component",
+                    "id": "UserObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "User",
+                            "navigation": {
+                                "authorizations": {
+                                    "detail": {
+                                        "route": "AuthorizationObjectPage"
+                                    }
+                                }
+                            },
+                            "controlConfiguration": {
+                                "authorizations/@com.sap.vocabularies.UI.v1.LineItem#Authorizations": {
+                                    "tableSettings": {
+                                        "creationMode": {
+                                            "name": "NewPage"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "AuthorizationObjectPage": {
+                    "type": "Component",
+                    "id": "AuthorizationObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "entitySet": "UserAuthorization",
+                            "navigation": {},
+                            "editableHeaderContent": false
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "user-mngr-mtx-biagi-dev"
+    }
+}

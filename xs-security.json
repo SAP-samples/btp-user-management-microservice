@@ -1,0 +1,101 @@
+{
+    "xsappname": "generic-mtx-app",
+    "tenant-mode": "shared",
+    "description": "Security profile of a Generic Multi-Tenant Application",
+    "scopes": [
+        {
+            "name": "$XSAPPNAME.mtcallback",
+            "description": "Subscription via SaaS Registry",
+            "grant-as-authority-to-apps": [
+                "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+            ]
+        },
+        {
+            "name": "$XSAPPNAME.cds.Subscriber",
+            "description": "Subscribe to applications"
+        },
+        {
+            "name": "uaa.user",
+            "description": "UAA"
+        },
+        {
+            "name": "$XSAPPNAME.Admin",
+            "description": "Administrator"
+        },
+        {
+            "name": "$XSAPPNAME.UserAdmin",
+            "description": "User Administrator"
+        },
+        {
+            "name": "$XSAPPNAME.User",
+            "description": "User"
+        }
+    ],
+    "foreign-scope-references": [
+        "$ACCEPT_GRANTED_SCOPES"
+    ],
+    "authorities-inheritance": false,
+    "authorities": [
+        "$XSAPPNAME.cds.Subscriber"
+    ],
+    "role-templates": [
+        {
+            "name": "Token_Exchange",
+            "description": "UAA",
+            "scope-references": [
+                "uaa.user"
+            ]
+        },
+        {
+            "name": "Subscriber",
+            "description": "Subscriber",
+            "scope-references": [
+                "$XSAPPNAME.cds.Subscriber"
+            ]
+        },
+        {
+            "name": "GenericMtxApp_Admin",
+            "description": "Administrator authorization",
+            "scope-references": [
+                "$XSAPPNAME.Admin"
+            ]
+        },
+        {
+            "name": "GenericMtxApp_UserAdmin",
+            "description": "User Administrator authorization",
+            "scope-references": [
+                "$XSAPPNAME.UserAdmin"
+            ]
+        },
+        {
+            "name": "GenericMtxApp_User",
+            "description": "User authorization",
+            "scope-references": [
+                "$XSAPPNAME.User"
+            ]
+        }
+    ],
+    "role-collections": [
+        {
+            "name": "GenericMtxApp_Administrator",
+            "description": "Administrator of a generic multi-tenant application",
+            "role-template-references": [
+                "$XSAPPNAME.GenericMtxApp_Admin",
+                "$XSAPPNAME.GenericMtxApp_UserAdmin"
+            ]
+        },
+        {
+            "name": "GenericMtxApp_User",
+            "description": "User of a generic multi-tenant application",
+            "role-template-references": [
+                "$XSAPPNAME.GenericMtxApp_User"
+            ]
+        }
+    ],
+    "oauth2-configuration": {
+        "redirect-uris": [
+            "https://*.hana.ondemand.com/**",
+            "https://*.applicationstudio.cloud.sap/**"
+        ]
+    }
+}

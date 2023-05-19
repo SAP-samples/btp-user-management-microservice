@@ -1,0 +1,1 @@
+using user.mngr.srv.UserMngrService as service from '../../srv/service';
