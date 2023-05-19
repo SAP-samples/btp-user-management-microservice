@@ -191,7 +191,7 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 11. In the **second dropdown list** select the **apiaccess** plan
 12. Set **xsuaa-api** as the **Instance Name** and click on the **Create** button at the bottom
 13. After the **XSUAA service instance** has been successfully created click on the **three dots** button at the far right of it and select **Create Service Key**
-14. Set **xsuaa-api-key** as the **Service Key Name** and click on the **Create** button at the bottom
+14. In the **dialog**, set **xsuaa-api-key** as the **Service Key Name** and click on the **Create** button at the bottom
 15. After the **service key** has been successfully created, click on it (service key name link) to view its contents
 16. Take note (**copy**) the following **service key properties**:
  - apiurl
