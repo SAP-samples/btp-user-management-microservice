@@ -184,7 +184,7 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 3. Click on the **Enable Cloud Foundry** button
 5. In the **dialog** provide an appropriate **Instance Name** and **Org Name** and click on the **Create** button at the bottom
 6. After **Cloud Foundry** has been successfully enabled, click on the **Create Space** button on the right
-7. Set an appropriate **Space Name** and click on the **Create** button at the bottom
+7. In the **dialog**, set an appropriate **Space Name** and click on the **Create** button at the bottom
 8. After the **CF Space** has been successfully created, on the **left-hand pane**, click on **Instances and Subscriptions**
 9. Click on the **Create** button on the **top right**
 10. In the **dialog**, serch for the **Authorization and Trust Management Service** in the **dropdown list**
