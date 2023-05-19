@@ -24,7 +24,7 @@ This sample code aims to help SAP developers (customers or partners) to develop 
 ```
 mkdir user-mngr
 ```
-3. Clone this repo into the recently created directory:
+4. Clone this repo into the recently created directory:
 ```
 git clone https://github.com/SAP-samples/btp-user-management-microservice.git user-mngr
 ```
@@ -140,8 +140,8 @@ cds watch
 > **HINT**: you can find the **subdomain name** in the **Overview** page of your subaccount in the **BTP cockpit**
 3. In the **Explorer** right-click on the **mta.yaml** file and select **Build MTA Project**
 4. When the build process finishes, an **mta_archives** directory will appear in the **Explorer**
-6. Expand the **mta_archives** directory
-7. Right-click the  **user-mngr_1.0.0.mtar** and select **Deploy MTA Archive**
+5. Expand the **mta_archives** directory
+6. Right-click the  **user-mngr_1.0.0.mtar** and select **Deploy MTA Archive**
 
 ### Test the Application in Cloud Foundry
 1. On the **left-hand pane** of your **BTP cockpit**, click on **HTML5 applications**
