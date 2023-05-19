@@ -23,7 +23,7 @@ This sample code aims to help SAP developers (customers or partners) to develop 
 ```
 mkdir user-mngr-mtx
 ```
-3. Clone this repo branch into the recently created directory:
+4. Clone this repo branch into the recently created directory:
 ```
 git clone -b multitenant https://github.com/SAP-samples/btp-user-management-microservice.git user-mngr-mtx
 ```
@@ -144,8 +144,8 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 > **HINT**: you can find the **subdomain name** in the **Overview** page of your subaccount in the **BTP cockpit**
 3. In the **Explorer** right-click on the **mta.yaml** file and select **Build MTA Project**
 4. When the build process finishes, an **mta_archives** directory will appear in the **Explorer**
-6. Expand the **mta_archives** directory
-7. Right-click the  **user-mngr-mtx_1.0.0.mtar** and select **Deploy MTA Archive**
+5. Expand the **mta_archives** directory
+6. Right-click the  **user-mngr-mtx_1.0.0.mtar** and select **Deploy MTA Archive**
 
 ### Setup the CF Controller API destination (for automatic routes creation on subscription)
 1. After the application is successfully deployed, open the **BTP cockpit** and access **your subaccount** (same subaccount used to start the **BAS Dev Space**)
@@ -182,35 +182,35 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 1. Go back to the **BTP cockpit**
 2. On the **left-hand pane** click on **Overview**
 3. Click on the **Enable Cloud Foundry** button
-5. In the **dialog** provide an appropriate **Instance Name** and **Org Name** and click on the **Create** button at the bottom
-6. After **Cloud Foundry** has been successfully enabled, click on the **Create Space** button on the right
-7. In the **dialog**, set an appropriate **Space Name** and click on the **Create** button at the bottom
-8. After the **CF Space** has been successfully created, on the **left-hand pane**, click on **Instances and Subscriptions**
-9. Click on the **Create** button on the **top right**
-10. In the **dialog**, serch for the **Authorization and Trust Management Service** in the **dropdown list**
-11. In the **second dropdown list** select the **apiaccess** plan
-12. Set **xsuaa-api** as the **Instance Name** and click on the **Create** button at the bottom
-13. After the **XSUAA service instance** has been successfully created click on the **three dots** button at the far right of it and select **Create Service Key**
-14. In the **dialog**, set **xsuaa-api-key** as the **Service Key Name** and click on the **Create** button at the bottom
-15. After the **service key** has been successfully created, click on it (service key name link) to view its contents
-16. Take note (**copy**) the following **service key properties**:
+4. In the **dialog** provide an appropriate **Instance Name** and **Org Name** and click on the **Create** button at the bottom
+5. After **Cloud Foundry** has been successfully enabled, click on the **Create Space** button on the right
+6. In the **dialog**, set an appropriate **Space Name** and click on the **Create** button at the bottom
+7. After the **CF Space** has been successfully created, on the **left-hand pane**, click on **Instances and Subscriptions**
+8. Click on the **Create** button on the **top right**
+9. In the **dialog**, serch for the **Authorization and Trust Management Service** in the **dropdown list**
+10. In the **second dropdown list** select the **apiaccess** plan
+11. Set **xsuaa-api** as the **Instance Name** and click on the **Create** button at the bottom
+12. After the **XSUAA service instance** has been successfully created click on the **three dots** button at the far right of it and select **Create Service Key**
+13. In the **dialog**, set **xsuaa-api-key** as the **Service Key Name** and click on the **Create** button at the bottom
+14. After the **service key** has been successfully created, click on it (service key name link) to view its contents
+15. Take note (**copy**) the following **service key properties**:
  - apiurl
  - clientid
  - clientsecret
  - url
-17. Click the **Close** button at the bottom
-18. On the **left-hand pane** expand the **Connectivity** node
-19. Click on **Destinations**
-20. Click on **New Destination**
-21. Fill-in the **required information** like demonstrated below:
+16. Click the **Close** button at the bottom
+17. On the **left-hand pane** expand the **Connectivity** node
+18. Click on **Destinations**
+19. Click on **New Destination**
+20. Fill-in the **required information** like demonstrated below:
 <p align="center"><img src="https://i.imgur.com/YOMu9hd.png" alt="XSUAA API destination"/></p>
 
-22. Click **Save**
-23. Go back to the **User Management** app subscription and hit the **Refresh** button
+21. Click **Save**
+22. Go back to the **User Management** app subscription and hit the **Refresh** button
 > **NOTE**: you might get consused after the list report is refreshed as you'll see your own user again, but don't worry, beacuse that user is the **subscriber subaccount** user which is actually the only one that exists on it (as the subaccount has been recently created) and you assigned yourself the **GenericMtxApp role collections** before accessing the subscription.
-24. Create a **new user** using the **User Management** app's UI
-25. Go back to the **BTP cockpit**
-26. On the **left-hand pane** expand the **Security** node and click on **Users**
+23. Create a **new user** using the **User Management** app's UI
+24. Go back to the **BTP cockpit**
+25. On the **left-hand pane** expand the **Security** node and click on **Users**
 > **NOTE**: you should now see the two users of your application (yours and the recently created one). This proves that, now, the microservice subscription is controlling the users from the **subscriber subaccount** instead of the provider (you can check it by going back to the **provider subaccount** and viewing the **users list** there).
 
 ## Code Details
