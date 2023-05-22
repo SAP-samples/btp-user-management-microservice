@@ -215,7 +215,7 @@ cds subscribe t1 --to http://localhost:4004 -u john:
 
 ## Code Details
 
-You can find a detailed explanaton about the code of this project in [**this blog post**](https://blogs.sap.com/2022/09/22/build-a-user-management-microservice-in-btp-with-cap).
+You can find a detailed explanaton about the code of this project in [**this blog post**](https://blogs.sap.com/2023/05/22/build-a-multi-tenant-user-management-microservice-in-btp-with-cap).
 
 ## Known Issues
 No known issues.
