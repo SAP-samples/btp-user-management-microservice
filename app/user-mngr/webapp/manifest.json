@@ -194,6 +194,6 @@
     },
     "sap.cloud": {
         "public": true,
-        "service": "user-mngr-biagi-dev"
+        "service": "user-mngr-[your BTP subdomain]"
     }
 }
