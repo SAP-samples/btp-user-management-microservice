@@ -221,7 +221,7 @@ You can find a detailed explanaton about the code of this project in [**this blo
 No known issues.
 
 ## How to obtain support
-[Create an issue](https://github.com/SAP-samples/btp-user-management-microservice/tree/multitenant/issues) in this repository if you find a bug or have questions about the content.
+[Create an issue](https://github.com/SAP-samples/btp-user-management-microservice/issues) in this repository if you find a bug or have questions about the content.
  
 For additional support, [ask a question in SAP Community](https://community.sap.com/t5/technology-q-a/qa-p/technology-questions).
 
